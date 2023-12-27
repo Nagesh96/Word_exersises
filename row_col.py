@@ -7,9 +7,10 @@ def read_table(doc_path):
     table = document.tables[0]
 
     data = {}
-    for col_idx, col in enumerate(table.columns):
-        col_data = [cell.text for cell in col.cells]
-        data[f'Column_{col_idx + 1}'] = col_data
+    for row in table.rows[1:]:  # Skip the header row
+        student_name = row.cells[1].text.strip()
+        marks = int(row.cells[2].text.strip())
+        data[student_name] = marks
 
     return data
 
@@ -17,5 +18,5 @@ def read_table(doc_path):
 document_path = 'your_document.docx'
 table_data = read_table(document_path)
 
-for column, values in table_data.items():
-    print(f'{column}: {values}')
+for student, marks in table_data.items():
+    print(f'{student}: {marks}')
